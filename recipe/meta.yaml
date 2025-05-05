@@ -123,9 +123,9 @@ outputs:
       noarch: generic
     requirements:
       host:
-        - {{ pin_compatible('libnvimgcodec' ~ somajor, max_pin=None) }}
+        - {{ pin_subpackage('libnvimgcodec' ~ somajor, max_pin=None) }}
       run:
-        - {{ pin_compatible('libnvimgcodec' ~ somajor, max_pin=None) }}
+        - {{ pin_subpackage('libnvimgcodec' ~ somajor, max_pin=None) }}
     about:
       summary: The nvImageCodec runtime library.
       description: >-
