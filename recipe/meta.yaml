@@ -59,6 +59,7 @@ outputs:
   - name: libnvimgcodec-dev
     build:
       run_exports:
+        - {{ pin_subpackage('libnvimgcodec', max_pin=None) }}
         - {{ pin_subpackage('libnvimgcodec' ~ somajor, max_pin=None) }}
       ignore_run_exports:
         - cuda-version
@@ -85,9 +86,11 @@ outputs:
         - lib/extensions/*.so.*  # [linux]
     requirements:
       host:
+        - {{ pin_subpackage('libnvimgcodec', exact=True) }}
         - {{ pin_subpackage('libnvimgcodec' ~ somajor, exact=True) }}
         - cuda-version {{ cuda_compiler_version }}
       run:
+        - {{ pin_subpackage('libnvimgcodec', exact=True) }}
         - {{ pin_subpackage('libnvimgcodec' ~ somajor, exact=True) }}
         - {{ pin_compatible('cuda-version', min_pin="x", max_pin="x") }}
     test:
@@ -114,6 +117,24 @@ outputs:
         - cmake ${CMAKE_ARGS} -GNinja test  # [build_platform == target_platform]
         - cmake --build .  # [build_platform == target_platform]
         # - test ! -f ${PREFIX}/lib/libnvimgcodec_static.a  # [unix]
+
+  - name: libnvimgcodec
+    build:
+      noarch: generic
+    requirements:
+      host:
+        - {{ pin_compatible('libnvimgcodec' ~ somajor, max_pin=None) }}
+      run:
+        - {{ pin_compatible('libnvimgcodec' ~ somajor, max_pin=None) }}
+    about:
+      summary: The nvImageCodec runtime library.
+      description: >-
+        This is a runtime package only. Developers should install libnvimgcodec-dev to build with nvImageCodec.
+      license: Apache-2.0
+      license_family: APACHE
+      license_file:
+        - LICENSE.txt
+        - Acknowledgements.txt
 
   - name: libnvimgcodec{{ somajor }}
     files:
